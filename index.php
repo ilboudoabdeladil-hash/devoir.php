@@ -111,3 +111,57 @@ if($a==="update" && $_POST){
     header("Location:index.php"); exit;
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <?php if($a==="list"):
+$rows=$pdo->query("SELECT * FROM publication ORDER BY datetime DESC")->fetchAll(); ?>
+<a href="?a=new">Nouvelle</a><br><br>
+<table border=1>
+<tr><th>ID</th><th>Titre</th><th>Img</th><th>Pub</th><th>Actions</th></tr>
+<?php foreach($rows as $r): ?>
+<tr>
+<td><?=$r["id"]?></td>
+<td><?=e($r["title"])?></td>
+<td><?php if($r["picture"]): ?><img src="uploads/<?=$r["picture"]?>" width=80><?php endif;?></td>
+<td><?=$r["is_published"]?"Oui":"Non"?></td>
+<td>
+<a href="?a=edit&id=<?=$r["id"]?>">Éditer</a>
+<form style="display:inline" method="post">
+<input type="hidden" name="t" value="<?=$_SESSION["t"]?>">
+<input type="hidden" name="a" value="delete">
+<input type="hidden" name="id" value="<?=$r["id"]?>">
+<button>Suppr</button></form>
+ 
+<form style="display:inline" method="post">
+<input type="hidden" name="t" value="<?=$_SESSION["t"]?>">
+<input type="hidden" name="a" value="toggle">
+<input type="hidden" name="id" value="<?=$r["id"]?>">
+<button><?=$r["is_published"]?"Dépub":"Publier"?></button></form>
+</td>
+</tr>
+<?php endforeach; ?>
+</table>
+<?php endif; ?>
+ 
+<?php if($a==="new"): ?>
+<h3>Créer</h3>
+<form method="post" enctype="multipart/form-data">
+<input type="hidden" name="t" value="<?=$_SESSION["t"]?>">
+<input type="hidden" name="a" value="create">
+Titre : <input name="title"><br>
+Image : <input type="file" name="pic"><br>
+Desc : <textarea name="desc"></textarea><br>
+Publiée ? <input type="checkbox" name="pub"><br>
+<button>OK</button>
+</form>
+<?php endif; ?>
+</body>
+</html>
+ 
