@@ -162,6 +162,28 @@ Publiée ? <input type="checkbox" name="pub"><br>
 <button>OK</button>
 </form>
 <?php endif; ?>
+
+<?php if($a==="edit"):
+$id = $_GET["id"];
+$st = $pdo->prepare("SELECT * FROM publication WHERE id=?");
+$st->execute([$id]);
+$p = $st->fetch();
+?>
+<h3>Éditer</h3>
+<form method="post" enctype="multipart/form-data">
+<input type="hidden" name="t" value="<?=$_SESSION["t"]?>">
+<input type="hidden" name="a" value="update">
+<input type="hidden" name="id" value="<?=$id?>">
+Titre : <input name="title" value="<?=e($p["title"])?>"><br>
+<?php if($p["picture"]): ?>
+<img src="uploads/<?=$p["picture"]?>" width=80><br>
+<?php endif; ?>
+Image : <input type="file" name="pic"><br>
+Desc : <textarea name="desc"><?=e($p["description"])?></textarea><br>
+Publiée ? <input type="checkbox" name="pub" <?=$p["is_published"]?"checked":""?>><br>
+<button>OK</button>
+</form>
+<?php endif; ?>
 </body>
 </html>
  
