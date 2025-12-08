@@ -5,7 +5,7 @@ session_start();
 try {
     $dsn = "mysql:dbname=new_db;host=127.0.0.1;port=3307;charset=utf8";
     $login = "root";
-    $pass = "Adil2005#";
+    $pass = "Mot de passe";
 
     $pdo = new PDO($dsn, $login, $pass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
